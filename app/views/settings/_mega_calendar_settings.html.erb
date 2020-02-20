@@ -2,6 +2,12 @@
 <table>
   <tbody>
     <tr>
+      <th><%= translate 'def_leave_color' %></th>
+      <td>
+        <input type="text" id="settings_default_leave_color" value="<%= settings['default_leave_color'] %>" name="settings[default_leave_color]" class="color" />
+      </td>
+    </tr>
+    <tr>
       <th><%= translate 'def_holiday_color' %></th>
       <td>
         <input type="text" id="settings_default_holiday_color" value="<%= settings['default_holiday_color'] %>" name="settings[default_holiday_color]" class="color" />

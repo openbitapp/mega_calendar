@@ -5,3 +5,5 @@ if Gem::Version.new(Bundler::VERSION) < Gem::Version.new('1.5.0')
 end
 
 gem "vpim", "13.11.11"
+# bainos 20200220
+gem "validates_timeliness"

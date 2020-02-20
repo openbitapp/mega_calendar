@@ -132,11 +132,11 @@ class CalendarController < ApplicationController
     ret_var << '</tr>'
     ret_var << '<tr>'
     ret_var << '<td>' + (translate 'start') + '</td>'
-    ret_var << '<td>' + holiday.start.to_date.to_s + '</td>' rescue '<td></td>'
+    ret_var << '<td>' + holiday.start.to_datetime.strftime("%Y-%m-%d %H:%M") + '</td>' rescue '<td></td>'
     ret_var << '</tr>'
     ret_var << '<tr>'
     ret_var << '<td>' + (translate 'end') + '</td>'
-    ret_var << '<td>' + holiday.end.to_date.to_s + '</td>' rescue '<td></td>'
+    ret_var << '<td>' + holiday.end.to_datetime.strftime("%Y-%m-%d %H:%M") + '</td>' rescue '<td></td>'
     ret_var << '</tr>'
     ret_var << '</table>'
     return ret_var
@@ -208,9 +208,41 @@ class CalendarController < ApplicationController
       issues4 = []
     end
     @events = []
+
+    # HOLIDAYS
     def_holiday = '#' + Setting.plugin_mega_calendar['default_holiday_color']
     def_color = '#' + Setting.plugin_mega_calendar['default_event_color']
-    @events = @events + holidays.collect {|h| {:id => h.id.to_s, :controller_name => 'holiday', :title => (h.user.blank? ? '' : h.user.login + ' - ') + (translate 'holiday'), :start => h.start.to_date.to_s, :end => (h.end + 1.day).to_date.to_s, :allDay => true, :color => def_holiday, :url => Setting.plugin_mega_calendar['sub_path'] + 'holidays/show?id=' + h.id.to_s, :className => 'calendar_event', :description => form_holiday(h) }}
+    holidays.each do |h|
+      #tbegin = h.start.to_datetime.strftime("%H:%M") rescue ''
+      #tend = h.end.to_datetime.strftime("%H:%M") rescue ''
+      css_classes = ['calendar_event']
+      h_event = {
+        :id => h.id.to_s,
+        :controller_name => 'holiday',
+        :title => (h.user.blank? ? '' : h.user.login + ' - ') + (translate 'holiday'),
+        :start => h.start.to_datetime.strftime("%Y-%m-%d %H:%M"),
+        :end => (h.end.to_datetime + 1.day).strftime("%Y-%m-%d %H:%M"),
+        :allDay => true,
+        :color => def_holiday,
+        :url => Setting.plugin_mega_calendar['sub_path'] + 'holidays/show?id=' + h.id.to_s,
+        :className => 'calendar_event',
+        :description => form_holiday(h)
+      }
+	
+      #puts "============================================="
+      #puts ((h.end.to_datetime - h.start.to_datetime)*24).to_i
+      #puts "============================================="
+
+      if ((h.end.to_datetime - h.start.to_datetime)*24).to_i <= 8
+        h_event[:allDay] = false
+	h_event[:title] = (h.user.blank? ? '' : h.user.login + ' - ') + (translate 'leave')
+	h_event[:color] = '#' + Setting.plugin_mega_calendar['default_leave_color']
+	h_event[:end] = h.end.to_datetime.strftime("%Y-%m-%d %H:%M")
+      end
+      @events << h_event
+    end
+
+    # ISSUES
     issues = issues + issues2 + issues3 + issues4
     issues = issues.compact.uniq
     issues.each do |i|

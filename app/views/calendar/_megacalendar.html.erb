@@ -120,24 +120,8 @@
           element.qtip({ content: event.description, position: { target: 'mouse', adjust: { x: 5, y: 5}} });
       },
       eventLimit: true,
-      editable: true,
-      eventDrop: function(event, delta, revertFunc) {
-        if(!confirm("<%= (translate 'save_question') %>")) {
-          revertFunc();
-        } else {
-          var event_begin = event.start.format();
-          var event_end = (event.end !== null ? event.end.format() : null);
-          var allDay = event.allDay;
-          $.get('<%= Setting.plugin_mega_calendar['sub_path'] %>calendar/change_' + event.controller_name, { id: event.id, event_begin: event_begin, event_end: event_end, allDay: allDay });
-        }
-      },
-      eventResize: function(event, delta, revertFunc) {
-        if(!confirm("<%= (translate 'save_question') %>")) {
-          revertFunc();
-        } else {
-          $.get('<%= Setting.plugin_mega_calendar['sub_path'] %>calendar/change_' + event.controller_name, { id: event.id, event_begin: event.start.format(), event_end: event.end.format() });
-        }
-      },
+      editable: false,
+      timeFormat: 'H:mm',
       select: function(start, end) {
         $('#calendar').fullCalendar('unselect');
         window.open('<%= Setting.plugin_mega_calendar['sub_path'] %>issues/new?issue[start_date]='+start.format("YYYY-MM-DD")+'&issue[due_date]='+end.format("YYYY-MM-DD")+'&issue[time_begin]='+start.format("HH:mm")+'&issue[time_end]='+end.format("HH:mm"), '_blank');

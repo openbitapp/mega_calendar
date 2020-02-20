@@ -51,10 +51,10 @@
      dayOfWeek: ["So.", "Mo", "Di", "Mi","Do", "Fr", "Sa."]
     }
    },
-   timepicker: false,
+   timepicker: true,
    datepicker: true,
-   format: 'Y-m-d',
-   value: '<%= @holiday.start.blank? ? '' : @holiday.start.to_date.to_s %>'
+   format: 'Y-m-d H:i',
+   value: '<%= @holiday.start.blank? ? '' : @holiday.start.to_datetime.strftime("%Y-%m-%d %H:%M") %>'
  };
  var options_end = {
    i18n: {
@@ -63,10 +63,10 @@
      dayOfWeek: ["So.", "Mo", "Di", "Mi","Do", "Fr", "Sa."]
     }
    },
-   timepicker: false,
+   timepicker: true,
    datepicker: true,
-   format: 'Y-m-d',
-   value: '<%= @holiday.end.blank? ? '' : @holiday.end.to_date.to_s %>'
+   format: 'Y-m-d H:i',
+   value: '<%= @holiday.end.blank? ? '' : @holiday.end.to_datetime.strftime("%Y-%m-%d %H:%M") %>'
  };
  $("#holiday_start").datetimepicker(options_start);
  $("#holiday_end").datetimepicker(options_end);
