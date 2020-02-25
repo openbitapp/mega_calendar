@@ -43,7 +43,7 @@
 </style>
 <h2><%= translate 'calendar' %></h2>
 <%= render :partial => 'calendar/filter_panel', :locals => {} %>
-<center><div id='calendar'" style="<%= calendar_style %>"></div></center>
+<center><div id="calendar" style="<%= calendar_style %>"></div></center>
 
 <%
   js_locale = User.current.language  rescue nil
