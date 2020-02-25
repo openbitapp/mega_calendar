@@ -50,6 +50,10 @@ class HolidaysController < ApplicationController
 
   def edit
     @holiday = Holiday.find(params[:id]) rescue nil
+    if @holiday.user_id != User.current.id and not User.current.admin
+      render_error :status => 403, :message => "Access denied."
+      return
+    end
     if @holiday.blank?
       redirect_to(:controller => 'holidays', :action => 'index')
     end
@@ -57,6 +61,10 @@ class HolidaysController < ApplicationController
 
   def update
     @holiday = Holiday.find(params[:holiday][:id]) rescue nil
+    if @holiday.user_id != User.current.id and not User.current.admin
+      render_error :status => 403, :message => "Access denied."
+      return
+    end
     @holiday.assign_attributes(params[:holiday])
     if @holiday.save
       redirect_to(:controller => 'holidays', :action => 'show', :id => @holiday.id)
@@ -70,6 +78,10 @@ class HolidaysController < ApplicationController
 
   def destroy
     holiday = Holiday.where(:id => params[:id]).first rescue nil
+    if holiday.user_id != User.current.id and not User.current.admin
+      render_error :status => 403, :message => "Access denied."
+      return
+    end
     holiday.destroy()
     redirect_to(:controller => 'holidays', :action => 'index')
   end

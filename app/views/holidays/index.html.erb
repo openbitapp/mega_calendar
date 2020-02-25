@@ -11,7 +11,17 @@
       <td><%= row.user.blank? ? '' : row.user.login.to_s %></td>
       <td><%= row.start.blank? ? '' : row.start.to_datetime.strftime("%Y-%m-%d %H:%M") %></td>
       <td><%= row.end.blank? ? '' : row.end.to_datetime.strftime("%Y-%m-%d %H:%M") %></td>
-      <td><a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/show?id=<%= row.id.to_s %>"><%= translate 'show' %></a>&nbsp;<a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/destroy?id=<%= row.id.to_s %>"><%= translate 'destroy' %></a></td>
+      <td>
+        <a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/show?id=<%= row.id.to_s %>">
+          <%= translate 'show' %>
+        </a>
+	<% if User.current.id == row.user.id or User.current.admin %>
+        &nbsp;
+        <a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/destroy?id=<%= row.id.to_s %>">
+          <%= translate 'destroy' %>
+        </a>
+        <% end %>
+      </td>
     </tr>
   <% end %>
   <% if @pagination == true %>

@@ -11,10 +11,14 @@
       <td><label><%= translate 'user' %></label></td>
       <td>
         <select name="holiday[user_id]">
+	<% if User.current.admin %>
             <option value=""><%= translate 'select_default' %></option>
           <% Holiday.get_activated_users.each do |u| %>
             <option value="<%= u.id.to_s %>"><%= u.login.to_s %></option>
           <% end %>
+        <% else %>
+            <option value="<%= User.current.id %>"><%= User.current.name %></option>
+        <% end %>
         </select>
       </td>
     </tr>
