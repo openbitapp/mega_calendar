@@ -21,7 +21,7 @@ class HolidaysController < ApplicationController
       @new_page = params[:page].to_i + 1
       @last_page = params[:page].to_i - 1
     end
-    @res = Holiday.limit(limit).offset(offset)
+    @res = Holiday.limit(limit).offset(offset).order(:user_id)
     @pagination = (Holiday.count.to_f / 20.to_f) > 1.to_f
   end
 
