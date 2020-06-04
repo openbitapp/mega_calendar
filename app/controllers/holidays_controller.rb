@@ -12,7 +12,7 @@ class HolidaysController < ApplicationController
   end
 
   def index
-    limit = 20
+    limit = 200
     offset = 0
     @new_page = 1
     @last_page = 0
@@ -21,8 +21,26 @@ class HolidaysController < ApplicationController
       @new_page = params[:page].to_i + 1
       @last_page = params[:page].to_i - 1
     end
-    @res = Holiday.limit(limit).offset(offset).order(:user_id)
-    @pagination = (Holiday.count.to_f / 20.to_f) > 1.to_f
+    #@res = Holiday.limit(limit).offset(offset).order(:user_id)
+    #@pagination = (Holiday.count.to_f / 20.to_f) > 1.to_f
+    puts ":= ========================================================="
+    puts params.inspect
+    if !params[:holiday].blank?
+      if !params[:holiday][:user_id].blank?
+        puts params[:holiday][:user_id]
+        @res = Holiday.limit(limit)
+                      .where(:user_id => params[:holiday][:user_id])
+                      .offset(offset)
+                      .order(:start)
+      else
+        @res = Holiday.limit(limit).offset(offset).order(:user_id)
+      end
+    else
+      puts "NONE"
+      @res = Holiday.limit(limit).offset(offset).order(:user_id)
+    end
+    #@pagination = (Holiday.count.to_f / 20.to_f) > 1.to_f
+    puts ":= ========================================================="
   end
 
   def new
