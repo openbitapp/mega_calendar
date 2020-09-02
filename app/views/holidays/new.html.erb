@@ -12,7 +12,7 @@
       <td>
         <select name="holiday[user_id]">
 	<% if User.current.admin %>
-            <option value=""><%= translate 'select_default' %></option>
+            <option value="<%= User.current.id.to_s %>"><%= User.current.login.to_s %></option>
           <% Holiday.get_activated_users.each do |u| %>
             <option value="<%= u.id.to_s %>"><%= u.login.to_s %></option>
           <% end %>
